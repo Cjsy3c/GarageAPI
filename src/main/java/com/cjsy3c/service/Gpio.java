@@ -1,6 +1,6 @@
 package com.cjsy3c.service;
 
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.pi4j.io.gpio.GpioController;
 import com.pi4j.io.gpio.GpioFactory;
@@ -14,6 +14,7 @@ public class Gpio {
 	final private static GpioController gpio = GpioFactory.getInstance();
 	private static GpioPinDigitalOutput garage;
 	
+	@Autowired
 	private Gpio(){
 		garage = gpio.provisionDigitalOutputPin(
 				RaspiPin.GPIO_07,// PIN NUMBER
@@ -22,13 +23,7 @@ public class Gpio {
 		
 		garage.setShutdownOptions(true, PinState.LOW, PinPullResistance.OFF);
 	}
-	
-	public static Gpio getInstance(){
-		if(gpioInstance == null)
-			gpioInstance = new Gpio();
-		return gpioInstance;
-	}
-	
+		
 	public void toggle(){
 		garage.high();
 		try {
